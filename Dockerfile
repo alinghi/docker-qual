@@ -44,5 +44,9 @@ COPY uwsgi.ini /qual/uwsgi.ini
 COPY qual.nginx /etc/nginx/sites-available/qual
 RUN ln -s /etc/nginx/sites-available/qual /etc/nginx/sites-enabled/qual
 
+# Starting commands
+COPY start.sh /start.sh
+
 EXPOSE 8888
 
+CMD ["sh", "/start.sh"]
