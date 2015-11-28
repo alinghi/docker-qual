@@ -39,10 +39,10 @@ RUN sudo -u postgres service postgresql start \
     && sudo -u qual python /qual/manage.py db upgrade
 
 # Link nginx to uwsgi
-#RUN pip install uwsgi
-#COPY uwsgi.ini /qual/uwsgi.ini
-#COPY qual.nginx /etc/nginx/sites-available/qual
-#RUN ln -s /etc/nginx/sites-available/qual /etc/nginx/sites-enabled/qual
+RUN pip install uwsgi
+COPY uwsgi.ini /qual/uwsgi.ini
+COPY qual.nginx /etc/nginx/sites-available/qual
+RUN ln -s /etc/nginx/sites-available/qual /etc/nginx/sites-enabled/qual
 
 EXPOSE 8888
 
