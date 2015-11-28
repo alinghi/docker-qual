@@ -25,6 +25,10 @@ RUN git clone https://github.com/protos37/qual /qual
 # install python dependencies
 RUN pip install -r /qual/requirements.txt
 
+# Add app owner user
+RUN useradd qual
+RUN chown -R qual /qual
+
 # setup PostgreSQL
 WORKDIR /qual
 RUN cp settings.py.default settings.py
@@ -32,17 +36,13 @@ RUN sudo -u postgres service postgresql start \
     && sudo -u postgres psql -c "CREATE USER qual;" \
     && sudo -u postgres psql -c "CREATE DATABASE qual;" \
     && sudo -u postgres psql -c "GRANT ALL privileges ON DATABASE qual TO qual;" \
-    && sudo -u postgres python /qual/manage.py db upgrade
+    && sudo -u qual python /qual/manage.py db upgrade
 
 # Link nginx to uwsgi
 #RUN pip install uwsgi
 #COPY uwsgi.ini /qual/uwsgi.ini
 #COPY qual.nginx /etc/nginx/sites-available/qual
 #RUN ln -s /etc/nginx/sites-available/qual /etc/nginx/sites-enabled/qual
-
-# Add app owner user
-RUN useradd qual
-RUN chown -R qual /qual
 
 EXPOSE 8888
 
